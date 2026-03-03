@@ -15,40 +15,63 @@ export default function ProductSummary() {
   }, [])
 
   return (
-    <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Product Summary</h1>
-        <p className="text-gray-400 text-sm mt-1">Aggregate performance per medicine</p>
+    <div className="space-y-5">
+      <div>
+        <h1 className="text-xl font-semibold text-slate-800">Product Summary</h1>
+        <p className="text-sm text-slate-400 mt-0.5">
+          Aggregate performance per medicine
+        </p>
       </div>
 
       <Card padding={false}>
         {loading ? (
           <div className="flex justify-center py-16">
-            <div className="w-7 h-7 border-4 border-green-600 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-brand-green
+              border-t-transparent rounded-full animate-spin" />
           </div>
         ) : products.length === 0 ? (
-          <EmptyState title="No products yet" message="Record your first sale to see product data." />
+          <EmptyState
+            title="No products yet"
+            message="Record your first sale to see product data here."
+          />
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50/80">
-                <tr>
-                  {['#', 'Medicine Name', 'Category', 'Total Sold', 'Total Revenue', 'Last Sold'].map(h => (
-                    <th key={h} className="text-left px-6 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wide">{h}</th>
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-surface-100">
+                  {['Rank', 'Medicine Name', 'Category',
+                    'Total Sold', 'Total Revenue', 'Last Sold'].map(h => (
+                    <th key={h}
+                      className="text-left px-6 py-3 text-xs font-semibold
+                        text-slate-400 uppercase tracking-wide">
+                      {h}
+                    </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-surface-50">
                 {products.map((p, i) => (
-                  <tr key={p.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4 text-gray-400 text-xs font-medium">#{i + 1}</td>
-                    <td className="px-6 py-4 font-medium text-gray-800">{p.medicine_name}</td>
-                    <td className="px-6 py-4"><Badge label={p.category} /></td>
-                    <td className="px-6 py-4 text-gray-600 font-medium">{p.total_sold}</td>
-                    <td className="px-6 py-4 font-semibold text-green-600">
+                  <tr key={p.id}
+                    className="hover:bg-surface-50 transition-colors duration-100">
+                    <td className="px-6 py-3.5">
+                      <span className="font-data text-xs font-medium text-slate-300">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                    </td>
+                    <td className="px-6 py-3.5 text-sm font-medium text-slate-700">
+                      {p.medicine_name}
+                    </td>
+                    <td className="px-6 py-3.5">
+                      <Badge label={p.category} />
+                    </td>
+                    <td className="px-6 py-3.5 font-data text-sm text-slate-600">
+                      {p.total_sold}
+                    </td>
+                    <td className="px-6 py-3.5 font-data text-sm
+                      font-medium text-brand-green">
                       ₱{parseFloat(p.total_revenue).toFixed(2)}
                     </td>
-                    <td className="px-6 py-4 text-gray-400 text-xs">
+                    <td className="px-6 py-3.5 font-data text-xs text-slate-400">
                       {new Date(p.last_sold_at).toLocaleDateString('en-US', {
                         month: 'short', day: 'numeric', year: 'numeric'
                       })}
