@@ -4,6 +4,13 @@ A full-stack web application for tracking pharmacy sales, managing product inven
 
 ---
 
+## Live Demo
+
+- Frontend: https://xndrncp08-bmr-pharmacy.vercel.app
+- Backend API: https://bmr-pharmacy-1.onrender.com/api/health
+
+---
+
 ## What It Does
 
 BMR Pharmacy Sales Tracker allows pharmacy staff to:
@@ -36,39 +43,14 @@ All data is stored in a PostgreSQL database hosted on Supabase. The frontend com
 **Database**
 - Supabase (PostgreSQL)
 
----
-
-## Database Schema
-
-Run the following SQL in your Supabase project under SQL Editor:
-
-```sql
-CREATE TABLE sales (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  medicine_name TEXT NOT NULL,
-  category TEXT NOT NULL,
-  price NUMERIC(10, 2) NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE TABLE products (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  medicine_name TEXT NOT NULL UNIQUE,
-  category TEXT NOT NULL,
-  total_sold INTEGER DEFAULT 1,
-  total_revenue NUMERIC(10, 2) DEFAULT 0,
-  last_sold_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX idx_sales_created_at ON sales(created_at DESC);
-CREATE INDEX idx_sales_category ON sales(category);
-CREATE INDEX idx_products_medicine ON products(medicine_name);
-CREATE INDEX idx_products_revenue ON products(total_revenue DESC);
-```
+**Hosting**
+- Frontend: Vercel
+- Backend: Render
+- Database: Supabase
 
 ---
 
-## Setup Guide
+## Local Setup Guide
 
 ### Prerequisites
 
@@ -85,7 +67,9 @@ git clone https://github.com/xndrncp08/bmr-pharmacy.git
 cd bmr-pharmacy
 ```
 
-### Configure the backend
+---
+
+### Step 2 — Configure the backend
 
 ```bash
 cd backend
@@ -107,7 +91,7 @@ npm install
 
 ---
 
-### Configure the frontend
+### Step 3 — Configure the frontend
 
 ```bash
 cd ../frontend
@@ -127,7 +111,7 @@ npm install
 
 ---
 
-### Run the application
+### Step 4 — Run the application
 
 Open two terminal windows.
 
@@ -151,9 +135,9 @@ The app will open at `http://localhost:5173`
 
 ---
 
-### Verify the setup
+### Step 5 — Verify the setup
 
-Open your browser and navigate to `http://localhost:5173`. You should see the Dashboard page.
+Open your browser and navigate to `http://localhost:5173`. You should see the Dashboard page. To confirm the API is running, visit `http://localhost:5000/api/health`
 
 
 ## Notes
@@ -161,3 +145,4 @@ Open your browser and navigate to `http://localhost:5173`. You should see the Da
 - Never commit your `.env` files. They are excluded via `.gitignore`.
 - Never use the Supabase `service_role` key in this application. Always use the `anon/public` key.
 - The frontend does not connect to Supabase directly. All database operations go through the Express backend.
+- The Render free tier spins down after 15 minutes of inactivity. The first request after inactivity may take up to 30 seconds while the service wakes up.
