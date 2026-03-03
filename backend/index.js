@@ -12,7 +12,11 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5174', 'https://xndrncp08-bmr-pharmacy.vercel.app/']
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'https://xndrncp08-bmr-pharmacy.vercel.app'
+  ]
 }))
 app.use(express.json())
 
