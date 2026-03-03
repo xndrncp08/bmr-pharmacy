@@ -3,6 +3,7 @@ import Card from '../../components/Card/Card'
 import Input from '../../components/Input/Input'
 import Select from '../../components/Select/Select'
 import Button from '../../components/Button/Button'
+import { useToastContext } from '../../context/ToastContext'
 import api from '../../services/api'
 
 const CATEGORIES = [
@@ -18,7 +19,7 @@ export default function NewSale() {
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
   const [loading, setLoading] = useState(false)
-  const [success, setSuccess] = useState(null)
+  const toast = useToastContext()
 
   const set = (k, v) => {
     setForm(f => ({ ...f, [k]: v }))
@@ -39,15 +40,14 @@ export default function NewSale() {
     if (Object.keys(e).length) return setErrors(e)
     try {
       setLoading(true)
-      setSuccess(null)
       const { data } = await api.post('/sales', {
         ...form, price: parseFloat(form.price)
       })
-      setSuccess(`Sale recorded — ${data.data.medicine_name} at ₱${parseFloat(data.data.price).toFixed(2)}`)
+      toast.success(`Sale recorded — ${data.data.medicine_name} at ₱${parseFloat(data.data.price).toFixed(2)}`)
       setForm(EMPTY)
       setErrors({})
     } catch {
-      setErrors({ submit: 'Failed to record sale. Please try again.' })
+      toast.error('Failed to record sale. Please try again.')
     } finally {
       setLoading(false)
     }
@@ -57,24 +57,12 @@ export default function NewSale() {
     <div className="space-y-6">
       <div>
         <h1 className="text-xl font-semibold text-slate-800">New Sale</h1>
-        <p className="text-sm text-slate-400 mt-0.5">Record a new medicine transaction</p>
+        <p className="text-sm text-slate-400 mt-0.5">
+          Record a new medicine transaction
+        </p>
       </div>
 
       <div className="max-w-md">
-        {success && (
-          <div className="mb-4 px-4 py-3 bg-brand-greenLight border border-green-200
-            rounded-lg flex items-center gap-2">
-            <div className="w-1.5 h-1.5 rounded-full bg-brand-green shrink-0" />
-            <p className="text-sm text-brand-greenDark font-medium">{success}</p>
-          </div>
-        )}
-        {errors.submit && (
-          <div className="mb-4 px-4 py-3 bg-red-50 border border-red-100
-            rounded-lg">
-            <p className="text-sm text-brand-red font-medium">{errors.submit}</p>
-          </div>
-        )}
-
         <Card>
           <div className="space-y-5">
             <Input
@@ -109,7 +97,7 @@ export default function NewSale() {
                 Record Sale
               </Button>
               <Button variant="outline"
-                onClick={() => { setForm(EMPTY); setErrors({}); setSuccess(null) }}>
+                onClick={() => { setForm(EMPTY); setErrors({}) }}>
                 Clear
               </Button>
             </div>
