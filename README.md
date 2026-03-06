@@ -4,13 +4,6 @@ A full-stack web application for tracking pharmacy sales, managing product inven
 
 ---
 
-## Live Demo
-
-- Frontend: https://xndrncp08-bmr-pharmacy.vercel.app
-- Backend API: https://bmr-pharmacy-1.onrender.com/api/health
-
----
-
 ## What It Does
 
 BMR Pharmacy Sales Tracker allows pharmacy staff to:
@@ -145,4 +138,5 @@ Open your browser and navigate to `http://localhost:5173`. You should see the Da
 - Never commit your `.env` files. They are excluded via `.gitignore`.
 - Never use the Supabase `service_role` key in this application. Always use the `anon/public` key.
 - The frontend does not connect to Supabase directly. All database operations go through the Express backend.
+
 - The Render free tier spins down after 15 minutes of inactivity. The first request after inactivity may take up to 30 seconds while the service wakes up.
